@@ -1,8 +1,5 @@
 <template>
   <div>
-    <button @click="redirectToLogin">
-      Iniciar Sesión
-    </button>
     <LoginUser v-if="showLogin" @loginEvent="handleLoginEvent" />
   </div>
 </template>
@@ -17,14 +14,10 @@ export default {
   },
   data () {
     return {
-      showLogin: false
+      showLogin: true
     }
   },
   methods: {
-    redirectToLogin () {
-      // Redirigir a la página de inicio de sesión
-      this.$router.push('/login')
-    },
     handleLoginEvent (data) {
       // Manejar evento de inicio de sesión
       console.log('Evento de inicio de sesión:', data)
