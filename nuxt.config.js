@@ -30,8 +30,12 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+<<<<<<< HEAD
     '~/plugins/axios.js',
     '~/plugins/bootstrap-vue.js'
+=======
+    '~/plugins/axios.js'
+>>>>>>> 3a49f403c50b81fa7eb28f08bca26d1368872288
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

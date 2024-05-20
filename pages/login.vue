@@ -4,7 +4,11 @@
       <h2>Login</h2>
       <form @submit.prevent="login">
         <div class="form-group">
+<<<<<<< HEAD
           <input v-model="nameSchool" type="text" placeholder="School Name" required class="form-control">
+=======
+          <input v-model="email" type="email" placeholder="Email" required class="form-control">
+>>>>>>> 3a49f403c50b81fa7eb28f08bca26d1368872288
         </div>
         <div class="form-group">
           <input v-model="password" type="password" placeholder="Password" required class="form-control">
@@ -26,11 +30,16 @@
 export default {
   data () {
     return {
+<<<<<<< HEAD
       nameSchool: '',
+=======
+      email: '',
+>>>>>>> 3a49f403c50b81fa7eb28f08bca26d1368872288
       password: ''
     }
   },
   methods: {
+<<<<<<< HEAD
     async login () {
       try {
         const response = await this.$axios.post('/login', {
@@ -47,6 +56,19 @@ export default {
         // Mostrar mensaje de error
         alert('Login failed: ' + error.response.data.message)
       }
+=======
+    login () {
+      this.$axios.post('/login', {
+        email: this.email,
+        password: this.password
+      })
+        .then((response) => {
+        // Manejo de sesión
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+>>>>>>> 3a49f403c50b81fa7eb28f08bca26d1368872288
     }
   }
 }
