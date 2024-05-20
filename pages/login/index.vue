@@ -8,10 +8,11 @@
 import LoginUser from '~/components/users/LoginUser.vue'
 
 export default {
-  name: 'IndexPage',
+  name: 'LoginPage',
   components: {
     LoginUser
   },
+  layout: 'login', // Nombre del layout definido en /layouts/login.vue
   data () {
     return {
       showLogin: true

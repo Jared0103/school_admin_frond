@@ -72,6 +72,23 @@ export default {
     return {
       clipped: false,
       drawer: false,
+      items: [
+        {
+          icon: 'mdi-account',
+          title: 'Dashboard',
+          to: '/dashboard'
+        },
+        {
+          icon: 'mdi-account',
+          title: 'Teachers',
+          to: '/dashboard/teachers'
+        },
+        {
+          icon: 'mdi-account',
+          title: 'Students/ classes',
+          to: '/dashboard/students'
+        }
+      ],
       miniVariant: false,
       title: 'CRUD con Firebase y Nuxt.js',
       showAlert: false,

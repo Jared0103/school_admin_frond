@@ -9,7 +9,9 @@
       color="primary"
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title class="ml-4">{{ title }}</v-toolbar-title>
+      <v-toolbar-title class="ml-4">
+        {{ title }}
+      </v-toolbar-title>
     </v-app-bar>
 
     <!-- Contenido principal -->
@@ -44,7 +46,7 @@ export default {
     return {
       clipped: false,
       drawer: false,
-      title: 'CRUD con Firebase y Nuxt.js',
+      title: 'Login.vue',
       showAlert: false,
       mensaje: '',
       color: '',
