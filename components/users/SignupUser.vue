@@ -100,8 +100,10 @@ export default {
           numberOfStaff: this.numberOfStaff,
           schoolAddress: this.schoolAddress
         })
-        // handle successful signup, e.g., redirect to login
+        // handle successful signup
         console.log('Signup successful:', response.data)
+        // Redirect to dashboard after successful signup
+        this.$router.push('/dashboard')
       } catch (error) {
         console.error('Signup failed:', error)
         // handle error, e.g., show error message
