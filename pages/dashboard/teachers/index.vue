@@ -1,5 +1,8 @@
 <template>
   <v-col cols="12">
+    <button @click="logout">
+      Logout
+    </button>
     <v-btn
       color="green"
       class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
@@ -30,70 +33,111 @@
           </v-row>
         </template>
       </v-data-table>
+      <v-dialog v-model="showDelete" width="400" persistent>
+        <v-card>
+          <v-card-title class="headline font-weight-bold">
+            Confirmar Eliminación
+          </v-card-title>
+          <v-card-text class="subtitle-1">
+            ¿Estás seguro de que deseas eliminar este usuario?
+          </v-card-text>
+          <v-card-actions>
+            <v-row>
+              <v-col cols="6">
+                <v-btn block color="red" @click="borrar">
+                  <span class="white--text">Eliminar</span>
+                </v-btn>
+              </v-col>
+              <v-col cols="6">
+                <v-btn block color="green" @click="showDelete = false">
+                  <span class="white--text">Cancelar</span>
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="showNuevo" width="400" persistent>
+        <v-card>
+          <v-card-title class="headline font-weight-bold grey--text text--darken-1">
+            Registrar Usuario
+          </v-card-title>
+          <v-card-text>
+            <v-form ref="formNuevo" v-model="validFormNuevo">
+              <!-- Campo de nombre completo -->
+              <v-text-field
+                v-model="fullNameNuevo"
+                label="Nombre Completo"
+                placeholder="Escribe tu nombre completo"
+                outlined
+              />
+              <!-- Campo de correo electrónico -->
+              <v-text-field
+                v-model="emailNuevo"
+                label="Email"
+                placeholder="Escribe tu correo"
+                type="email"
+                :rules="correo"
+                outlined
+              />
+              <!-- Campo de contraseña -->
+              <v-text-field
+                v-model="passwordUserNuevo"
+                label="Password"
+                placeholder="Escribe tu contraseña"
+                type="password"
+                :rules="password"
+                outlined
+              />
+              <!-- Campo de nombre de clase -->
+              <v-text-field
+                v-model="classNameNuevo"
+                label="Nombre de Clase"
+                placeholder="Escribe el nombre de la clase"
+                outlined
+              />
+              <!-- Campo de género -->
+              <v-select
+                v-model="genderNuevo"
+                :items="['Masculino', 'Femenino', 'Otro']"
+                label="Género"
+                outlined
+              />
+              <!-- Campo de número de teléfono -->
+              <v-text-field
+                v-model="phoneNumberNuevo"
+                label="Teléfono"
+                placeholder="Escribe tu teléfono"
+                outlined
+              />
+              <!-- Campo de asignatura -->
+              <v-text-field
+                v-model="subjectNuevo"
+                label="Materia"
+                placeholder="Escribe la materia"
+                outlined
+              />
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-row>
+              <v-col cols="6">
+                <!-- Botón para agregar usuario -->
+                <v-btn block color="primary" @click="agregar">
+                  <span class="white--text">Agregar</span>
+                </v-btn>
+              </v-col>
+              <v-col cols="6">
+                <!-- Botón para cancelar el registro -->
+                <v-btn block color="red" @click="showNuevo = false">
+                  <span class="white--text">Cancelar</span>
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-row>
-    <v-dialog v-model="showNuevo" width="400" persistent>
-      <v-card>
-        <v-card-title class="headline font-weight-bold grey--text text--darken-1">
-          Registrar Usuario
-        </v-card-title>
-        <v-card-text>
-          <v-form ref="formNuevo" v-model="validFormNuevo">
-            <!-- Campo de correo electrónico -->
-            <v-text-field
-              v-model="emailNuevo"
-              label="Email"
-              placeholder="Escribe tu correo"
-              type="email"
-              :rules="correo"
-              outlined
-            />
-            <!-- Campo de contraseña -->
-            <v-text-field
-              v-model="passwordUserNuevo"
-              label="Password"
-              placeholder="Escribe tu contraseña"
-              type="password"
-              :rules="password"
-              outlined
-            />
-            <!-- Agregar campos adicionales -->
-            <v-row>
-              <v-col cols="6">
-                <v-text-field v-model="nombreNuevo" label="Nombre" placeholder="Escribe tu nombre" outlined />
-              </v-col>
-              <v-col cols="6">
-                <v-text-field v-model="telefonoNuevo" label="Teléfono" placeholder="Escribe tu teléfono" outlined />
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="6">
-                <v-text-field v-model="subjectNuevo" label="Materia" placeholder="Escribe la materia" outlined />
-              </v-col>
-              <v-col cols="6">
-                <!-- Campo para género -->
-                <v-select v-model="genderNuevo" :items="generos" label="Género" outlined />
-              </v-col>
-            </v-row>
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-row>
-            <v-col cols="6">
-              <!-- Botón para agregar usuario -->
-              <v-btn block color="primary" @click="agregar">
-                <span class="white--text">Agregar</span>
-              </v-btn>
-            </v-col>
-            <v-col cols="6">
-              <!-- Botón para cancelar el registro -->
-              <v-btn block color="red" @click="showNuevo = false">
-                <span class="white--text">Cancelar</span>
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-col>
 </template>
 
@@ -113,28 +157,26 @@ export default {
         { text: 'Acciones', align: 'center', sortable: false, value: 'acciones' }
       ],
       token: null,
-      teachers: [], // Cambiar usuarios a teachers
-      showDelete: false,
-      idToDelete: null,
-      validForm: false,
-      email: null,
-      passwordUser: null,
+      teachers: [],
       password: [
         v => (v && v.length > 5) || 'La contraseña debe tener más de 6 caracteres'
       ],
       correo: [
         v => /.+@.+\..+/.test(v) || 'El correo electrónico debe ser válido'
       ],
-      showUpdate: false,
-      userToUpdate: {},
-      validFormUpdate: false,
+
+      // Agregar
       showNuevo: false,
       validFormNuevo: false,
-      fullName: '',
-      className: '',
-      gender: '',
-      phoneNumber: '',
-      subject: ''
+      fullNameNuevo: '',
+      emailNuevo: null,
+      passwordUserNuevo: '',
+      classNameNuevo: '',
+      genderNuevo: '',
+      phoneNumberNuevo: '',
+      subjectNuevo: '',
+      // Delete
+      showDelete: false
     }
   },
   mounted () {
@@ -143,10 +185,16 @@ export default {
     if (!this.token) {
       this.$router.push('/')
     }
-    this.getAllUsers()
+    this.getAllTeachers()
   },
   methods: {
-    getAllUsers () {
+    logout () {
+      // Eliminar el token del localStorage
+      localStorage.removeItem('token')
+      // Redirigir al usuario a la página de inicio
+      this.$router.push('/')
+    },
+    getAllTeachers () {
       const url = '/teachers/getAllTeachers'
       const config = { headers: { Authorization: `Bearer ${this.token}` } }
       this.$axios.get(url, config)
@@ -160,119 +208,69 @@ export default {
           }
         })
         .catch((err) => {
-          console.log('🚀 ~ getAllUsers ~ err:', err)
+          console.log('🚀 ~ getAllTeachers ~ err:', err)
           this.$axios.push('/')
         })
+    },
+    agregar () {
+      this.validFormNuevo = this.$refs.formNuevo.validate()
+      if (this.validFormNuevo) {
+        const sendData = {
+          fullName: this.fullNameNuevo,
+          email: this.emailNuevo,
+          className: this.classNameNuevo,
+          gender: this.genderNuevo,
+          password: this.passwordUserNuevo,
+          phoneNumber: this.phoneNumberNuevo,
+          subject: this.subjectNuevo
+        }
+        console.log('🚀 ~ agregar ~ sendData:', sendData)
+        const url = '/teachers/addTeacher'
+        const config = { headers: { Authorization: `Bearer ${this.token}` } }
+        this.$axios.post(url, sendData, config)
+          .then((res) => {
+            console.log('@@ res => ', res)
+            if (res.data.message === 'Teacher added successfully') {
+              this.$nuxt.$emit('evento', {
+                message: res.data.message,
+                color: 'green',
+                type: 'success',
+                time: 2000
+              })
+              this.getAllTeachers()
+              this.showNuevo = false
+            }
+          })
+          .catch((err) => {
+            console.log('🚀 ~ agregar ~ err: ', err)
+          })
+      } else {
+        alert('Faltan Datos')
+      }
     },
     borrarUsuario (id) {
       this.idToDelete = id
       this.showDelete = true
     },
-    borar () {
-      const url = `/delete-user/${this.idToDelete}`
+    borrar () {
+      const url = `/teachers/deleteTeacher/${this.idToDelete}`
       const config = { headers: { Authorization: `Bearer ${this.token}` } }
       this.$axios.delete(url, config)
         .then((res) => {
           console.log('@@ res => ', res)
-          if (res.data.message === 'User deleted successfully') {
+          if (res.data.message === 'Teacher deleted successfully') {
             this.$nuxt.$emit('evento', {
               message: res.data.message,
               color: 'red',
               type: 'error'
             })
-            this.getAllUsers()
+            this.getAllTeachers()
             this.showDelete = false
           }
         })
         .catch((err) => {
           console.log('@@@ err => ', err)
         })
-    },
-    agregar () {
-      // Valida el formulario
-      this.$refs.formNuevo.validate().then((valid) => {
-        if (valid) {
-          // Crea el objeto de datos a enviar
-          const sendData = {
-            fullName: `${this.nombreNuevo} ${this.apellidoPaternoNuevo} ${this.apellidoMaternoNuevo}`,
-            email: this.emailNuevo,
-            className: this.classNameNuevo,
-            gender: this.genderNuevo,
-            password: this.passwordUserNuevo,
-            phoneNumber: this.telefonoNuevo,
-            subject: this.subjectNuevo
-          }
-          // Realiza la solicitud POST al backend
-          const url = '/signup'
-          this.$axios.post(url, sendData)
-            .then((res) => {
-              // Verifica si la respuesta fue exitosa
-              if (res.data.message === 'Usuario registrado satisfactoriamente') {
-                // Emite un evento para mostrar un mensaje de éxito
-                this.$nuxt.$emit('evento', {
-                  message: res.data.message,
-                  color: 'green',
-                  type: 'success',
-                  time: 2000
-                })
-                // Actualiza la lista de usuarios y oculta el formulario
-                this.getAllUsers()
-                this.showNuevo = false
-              }
-            })
-            .catch((err) => {
-              // Muestra un mensaje de error en la consola si ocurre un error en la solicitud
-              console.error('Error al registrar usuario:', err)
-            })
-        } else {
-          // Muestra un alerta si el formulario no es válido
-          alert('Faltan Datos')
-        }
-      })
-    },
-
-    actualizarUsuario (id) {
-      this.userToUpdate = this.teachers.find(teacher => teacher.id === id)
-      this.showUpdate = true
-    },
-    modificar () {
-      this.validFormUpdate = this.$refs.formUpdate.validate()
-      if (this.validFormUpdate) {
-        const sendData = {
-          id: this.userToUpdate.id,
-          email: this.userToUpdate.email,
-          password: this.userToUpdate.password,
-          nombre: this.userToUpdate.nombre,
-          apellidoPaterno: this.userToUpdate.apellidoPaterno,
-          apellidoMaterno: this.userToUpdate.apellidoMaterno,
-          telefono: this.userToUpdate.telefono,
-          direccion: this.userToUpdate.direccion,
-          cPostal: this.userToUpdate.cp,
-          estado: this.userToUpdate.estado
-        }
-        console.log('🚀 ~ modificar ~ sendData:', sendData)
-        this.$axios.defaults.headers.common.Authorization = `Bearer ${this.token}`
-        const url = `/update-user/${sendData.id}`
-        this.$axios.put(url, sendData)
-          .then((res) => {
-            console.log('@@ res => ', res)
-            if (res.data.message === 'User update successfully') {
-              this.$nuxt.$emit('evento', {
-                message: res.data.message,
-                color: 'warning',
-                type: 'success',
-                time: 3000
-              })
-              this.getAllUsers()
-              this.showUpdate = false
-            }
-          })
-          .catch((err) => {
-            console.log('🚀 ~ modificar ~ err: ', err)
-          })
-      } else {
-        alert('Faltan Datos')
-      }
     }
   }
 }

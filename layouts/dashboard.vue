@@ -2,7 +2,7 @@
   <v-app id="app">
     <!-- Barra de navegación lateral -->
     <v-navigation-drawer
-      v-model="drawer"
+      permanent
       :mini-variant="miniVariant"
       :clipped="clipped"
       fixed
@@ -34,7 +34,6 @@
       fixed
       app
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title class="text-uppercase">
         {{ title }}
       </v-toolbar-title>
@@ -87,6 +86,26 @@ export default {
           icon: 'mdi-account',
           title: 'Students/ classes',
           to: '/dashboard/students'
+        },
+        {
+          icon: 'mdi-account',
+          title: 'Billing',
+          to: '/dashboard'
+        },
+        {
+          icon: 'mdi-account',
+          title: 'Setting and Profile',
+          to: '/dashboard'
+        },
+        {
+          icon: 'mdi-account',
+          title: 'Exams',
+          to: '/dashboard'
+        },
+        {
+          icon: 'mdi-account',
+          title: 'Features',
+          to: '/dashboard'
         }
       ],
       miniVariant: false,
