@@ -2,6 +2,9 @@
   <v-col cols="12">
     <!-- Botón para agregar un nuevo usuario -->
     <v-row>
+      <button @click="logout">
+        Logout
+      </button>
       <v-btn block color="green" @click="showNuevoEstudiante = true">
         <span class="white--text">Usuario Nuevo</span>
       </v-btn>
