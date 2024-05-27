@@ -694,7 +694,7 @@ export default {
 .full-width-section {
   width: 100%;
   background: linear-gradient(to bottom, #100F57 63%, white 50%);
-  padding: 20px 0;
+  margin-top: -225px;
 }
 
 .sub-title-text1 {
