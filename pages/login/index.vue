@@ -16,11 +16,11 @@
             <v-card-text align="center">
               <v-form>
                 <v-text-field
-                  v-model="email"
-                  :rules="emailValidation"
+                  v-model="schoolName"
+                  :rules="[v => !!v || 'School name is required']"
                   class="fixed-width"
                   outlined
-                  placeholder="Enter the email"
+                  placeholder="Enter the school name"
                   type="text"
                 />
                 <v-text-field
@@ -69,12 +69,9 @@ export default {
   layout: 'noNavBar',
   data () {
     return {
-      email: null,
+      schoolName: null,
       password: null,
       showPassword: false,
-      emailValidation: [
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
-      ],
       showLogin: true
     }
   },
@@ -84,10 +81,10 @@ export default {
     },
     login () {
       const sendData = {
-        email: this.email,
+        nameSchool: this.schoolName,
         password: this.password
       }
-      const url = 'api/auth/login'
+      const url = '/login'
       this.$axios.post(url, sendData)
         .then((res) => {
           if (res.data.token) {

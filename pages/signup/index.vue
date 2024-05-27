@@ -146,7 +146,6 @@
                         outlined
                         class="fixed-width"
                       />
-                      Must be at least 8 characters
                     </v-form>
                   </v-card-text>
                   <v-card-actions class="justify-center">
@@ -305,20 +304,19 @@ export default {
     },
     signupUser () {
       const sendData = {
-        adminName: this.adminName,
-        schoolName: this.schoolName,
-        schoolEmail: this.schoolEmail,
+        nameAdmin: this.adminName,
+        nameSchool: this.schoolName,
+        schoolMail: this.schoolEmail,
         password: this.password,
-        staffNumber: this.staffNumber,
-        schoolAddress: this.schoolAddress,
-        id: Date.now().toLocaleString()
+        numberOfStaff: this.staffNumber,
+        schoolAddress: this.schoolAddress
       }
       console.log('@@@ data => ', sendData)
-      const url = '/api/auth/signup'
+      const url = '/signup'
       this.$axios.post(url, sendData)
         .then((res) => {
-          if (res.data.message === 'Usuario Registrado Satisfactoriamnete') {
-            console.log('Se logro registrar')
+          if (res.data.message === 'User registered successfully') {
+            console.log('Registration successful')
           }
         })
         .catch((err) => {
