@@ -2,6 +2,15 @@
   <v-col cols="12">
     <!-- Botón para agregar un nuevo usuario -->
     <v-row>
+      <v-btn block color="blue" @click="exportarEstudiantesCSV">
+        <span class="white--text">Exportar Estudiantes a CSV</span>
+      </v-btn>
+      <div>
+        <input type="file" accept=".csv" @change="handleFileChange">
+        <button @click="importStudents">
+          Importar Estudiantes
+        </button>
+      </div>
       <button @click="logout">
         Logout
       </button>
@@ -170,7 +179,9 @@ export default {
       correo: [v => !!v || 'El correo es requerido', v => /.+@.+\..+/.test(v) || 'Correo debe ser válido'],
       password: [v => !!v || 'La contraseña es requerida'],
       // borrar
-      showDelete: false
+      showDelete: false,
+      // importar
+      selectedFile: null
     }
   },
   mounted () {
@@ -266,6 +277,74 @@ export default {
         })
         .catch((err) => {
           console.log('@@@ err => ', err)
+        })
+    },
+    exportarEstudiantesCSV () {
+      const url = '/students/exportAllStudentsToCSV' // Ruta del backend para exportar estudiantes a CSV
+      const config = { headers: { Authorization: `Bearer ${this.token}` }, responseType: 'blob' } // Establecer responseType a 'blob'
+
+      // Realizar la solicitud al backend para exportar los estudiantes a un archivo CSV
+      this.$axios.get(url, config)
+        .then((res) => {
+          // Verificar si la exportación fue exitosa
+          if (res.data instanceof Blob) { // Verificar si la respuesta es un blob
+            // Crear un objeto URL para el blob
+            const fileUrl = window.URL.createObjectURL(new Blob([res.data]))
+            // Crear un enlace de descarga y hacer clic en él para descargar el archivo
+            const link = document.createElement('a')
+            link.href = fileUrl
+            link.setAttribute('download', 'students.csv')
+            document.body.appendChild(link)
+            link.click()
+            // Limpiar el objeto URL creado después de la descarga
+            window.URL.revokeObjectURL(fileUrl)
+          } else {
+            console.error('Error al exportar estudiantes a CSV:', res.data.message)
+          }
+        })
+        .catch((err) => {
+          console.error('Error al exportar estudiantes a CSV:', err)
+        })
+    },
+    handleFileChange (event) {
+      // Verificar si se seleccionó un archivo
+      if (event.target.files.length > 0) {
+        // Asignar el archivo seleccionado a selectedFile
+        this.selectedFile = event.target.files[0]
+        console.log('Archivo seleccionado:', this.selectedFile.name)
+      } else {
+        console.error('No se seleccionó ningún archivo.')
+        // Puedes mostrar un mensaje de error o tomar alguna otra acción adecuada aquí
+      }
+    },
+    importStudents () {
+      // Verificar si se ha seleccionado un archivo
+      if (!this.selectedFile) {
+        console.error('No file selected')
+        return
+      }
+
+      // Crear un objeto FormData para enviar el archivo al backend
+      const formData = new FormData()
+      formData.append('file', this.selectedFile)
+
+      // Realizar una solicitud POST al endpoint correspondiente en el backend
+      this.$axios.post('/students/importStudentsFromCSV', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${this.token}`
+        }
+      })
+        .then((res) => {
+          // Manejar la respuesta del backend (éxito o error)
+          if (res.data.success) {
+            console.log('Students imported successfully')
+          } else {
+            console.error('Error importing students:', res.data.message)
+          }
+        })
+        .catch((err) => {
+          console.error('Error importing students:', err)
         })
     }
   }
