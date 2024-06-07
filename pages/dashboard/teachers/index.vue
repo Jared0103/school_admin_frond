@@ -3,6 +3,9 @@
     <button @click="logout">
       Logout
     </button>
+    <v-btn block color="blue" @click="exportarEstudiantesCSV">
+      <span class="white--text">Exportar Teachers a CSV</span>
+    </v-btn>
     <v-btn
       color="green"
       class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
@@ -270,6 +273,33 @@ export default {
         })
         .catch((err) => {
           console.log('@@@ err => ', err)
+        })
+    },
+    exportarEstudiantesCSV () {
+      const url = '/teachers/exportAllTeachersToCSV' // Ruta del backend para exportar estudiantes a CSV
+      const config = { headers: { Authorization: `Bearer ${this.token}` }, responseType: 'blob' } // Establecer responseType a 'blob'
+
+      // Realizar la solicitud al backend para exportar los estudiantes a un archivo CSV
+      this.$axios.get(url, config)
+        .then((res) => {
+          // Verificar si la exportación fue exitosa
+          if (res.data instanceof Blob) { // Verificar si la respuesta es un blob
+            // Crear un objeto URL para el blob
+            const fileUrl = window.URL.createObjectURL(new Blob([res.data]))
+            // Crear un enlace de descarga y hacer clic en él para descargar el archivo
+            const link = document.createElement('a')
+            link.href = fileUrl
+            link.setAttribute('download', 'teachers.csv')
+            document.body.appendChild(link)
+            link.click()
+            // Limpiar el objeto URL creado después de la descarga
+            window.URL.revokeObjectURL(fileUrl)
+          } else {
+            console.error('Error al exportar estudiantes a CSV:', res.data.message)
+          }
+        })
+        .catch((err) => {
+          console.error('Error al exportar estudiantes a CSV:', err)
         })
     }
   }
