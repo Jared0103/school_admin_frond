@@ -23,22 +23,42 @@
       <!-- Elementos de navegación -->
       <v-divider />
       <v-list>
-        <v-list-item
+        <v-list-group
           v-for="(item, i) in items"
           :key="i"
-          :to="item.to"
-          router
-          exact
+          v-model="item.active"
+          no-action
         >
-          <v-list-item-action>
-            <v-img :src="item.img" alt="icon" class="sidebar-icon" />
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title class="white--text">
-              {{ item.title }}
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+          <template #activator>
+            <v-list-item @click="navigateTo(item.to)">
+              <v-list-item-action>
+                <v-img :src="item.img" alt="icon" class="sidebar-icon" />
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title class="white--text">
+                  {{ item.title }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+          <v-list-item
+            v-for="(subItem, j) in item.subItems"
+            :key="j"
+            class="pl-4"
+            :style="{ marginLeft: '10px' }"
+          >
+            <v-list-item-action>
+              <v-icon class="submenu-icon">
+                mdi-chevron-right
+              </v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title class="white--text">
+                {{ subItem.title }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
 
         <!-- Espacio adicional antes de "Features" -->
         <v-list-item class="mt-4" />
@@ -55,17 +75,6 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-
-    <!-- Barra de aplicación -->
-    <v-app-bar
-      :clipped-left="clipped"
-      fixed
-      app
-    >
-      <v-toolbar-title class="text-uppercase">
-        {{ title }}
-      </v-toolbar-title>
-    </v-app-bar>
 
     <!-- Contenido principal -->
     <v-main>
@@ -109,34 +118,65 @@ export default {
         {
           img: '/sideBar/home-2.png',
           title: 'Dashboard',
-          to: '/dashboard'
+          to: '/dashboard',
+          active: false,
+          subItems: []
         },
         {
           img: '/sideBar/home-2.png',
           title: 'Teachers',
-          to: '/dashboard/teachers'
+          to: '/dashboard/teachers',
+          active: false,
+          subItems: [
+            { title: 'All teachers' },
+            { title: 'Add teachers' },
+            { title: 'Teachers details' }
+          ]
         },
         {
           img: '/sideBar/school.png',
           title: 'Students/ classes',
-          to: '/dashboard/students'
+          to: '/dashboard/students',
+          active: false,
+          subItems: [
+            { title: 'All students' },
+            { title: 'Admission form' },
+            { title: 'Student promotion' },
+            { title: 'Class' }
+          ]
         },
         {
           img: '/sideBar/Billing.png',
           title: 'Billing',
-          to: '/dashboard'
+          to: '/dashboard/billing',
+          active: false,
+          subItems: [
+            { title: 'Student Billing' },
+            { title: 'Parent Billing' },
+            { title: 'School billing' },
+            { title: 'Friends Billing' }
+          ]
         },
         {
           img: '/sideBar/Settings.png',
           title: 'Setting and Profile',
-          to: '/dashboard'
+          to: '/dashboard/settings',
+          active: false,
+          subItems: []
         },
         {
           img: '/sideBar/Exams.png',
           title: 'Exams',
-          to: '/dashboard'
+          to: '/dashboard/exams',
+          active: false,
+          subItems: []
         }
       ]
+    }
+  },
+  methods: {
+    navigateTo (route) {
+      this.$router.push(route)
     }
   },
   created () {
@@ -213,6 +253,15 @@ export default {
 
 .v-navigation-drawer .v-list-item__title {
   font-size: 14px;
+}
+
+.v-list-item:hover {
+  background-color: #1a2b5f !important;
+}
+
+.submenu-icon {
+  margin-left: -10px;
+  color: #fff;
 }
 
 /* Ajustes de la barra de aplicación */

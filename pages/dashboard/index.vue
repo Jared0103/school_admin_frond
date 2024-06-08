@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <header class="dashboard-header">
-      <div class="header-content">
+      <div class="header-content promo-content">
         <div class="promo-text">
           Learn how to launch faster<br>
           watch our webinar for tips from our experts and get a limited time offer.
@@ -25,25 +25,43 @@
 
       <div class="dashboard-sections">
         <section class="dashboard-section">
-          <img src="/sideBar/Billing.png" class="section-icon" alt="Add other admins">
-          <div class="section-content">
-            <h2>Add other admins</h2>
-            <p>Create rich course content and coaching products for your students. When you give them a pricing plan, they'll appear on your site!</p>
+          <div class="section-header">
+            <v-icon class="section-icon">
+              mdi-account
+            </v-icon>
+            <h2 class="section-title">
+              Add other admins
+            </h2>
           </div>
+          <p class="section-description">
+            Create rich course content and coaching products for your students. When you give them a pricing plan, they'll appear on your site!
+          </p>
         </section>
         <section class="dashboard-section">
-          <img src="/sideBar/school.png" class="section-icon" alt="Add classes">
-          <div class="section-content">
-            <h2>Add classes</h2>
-            <p>Create rich course content and coaching products for your students. When you give them a pricing plan, they'll appear on your site!</p>
+          <div class="section-header">
+            <v-icon class="section-icon">
+              mdi-school
+            </v-icon>
+            <h2 class="section-title">
+              Add classes
+            </h2>
           </div>
+          <p class="section-description">
+            Create rich course content and coaching products for your students. When you give them a pricing plan, they'll appear on your site!
+          </p>
         </section>
         <section class="dashboard-section">
-          <img src="/sideBar/school.png" class="section-icon" alt="Add students">
-          <div class="section-content">
-            <h2>Add students</h2>
-            <p>Create rich course content and coaching products for your students. When you give them a pricing plan, they'll appear on your site!</p>
+          <div class="section-header">
+            <v-icon class="section-icon">
+              mdi-account-group
+            </v-icon>
+            <h2 class="section-title">
+              Add students
+            </h2>
           </div>
+          <p class="section-description">
+            Create rich course content and coaching products for your students. When you give them a pricing plan, they'll appear on your site!
+          </p>
         </section>
       </div>
     </main>
@@ -51,7 +69,7 @@
     <div class="support-button">
       <v-menu offset-y>
         <template #activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on">
+          <v-btn icon v-bind="attrs" class="support-btn" v-on="on">
             <v-icon>mdi-headset</v-icon>
             <span>Support</span>
             <v-icon right>
@@ -98,6 +116,15 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+body, html, #__nuxt, #app, .v-application {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+
 .dashboard-container {
   display: flex;
   flex-direction: column;
@@ -106,15 +133,18 @@ export default {
 }
 
 .dashboard-header {
-  width: 1439px;
+  width: 100%;
   height: 95px;
-  left: 1px;
-  background: #f5f5f5;
   padding: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #ddd;
+  background: none;
+}
+
+.promo-content {
+  background: none;
+  box-shadow: none;
 }
 
 .header-content {
@@ -122,6 +152,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  background: none;
 }
 
 .promo-text {
@@ -151,91 +182,97 @@ export default {
 
 .bell-icon {
   font-size: 24px;
-  color: #666;
+  color: #636161;
   cursor: pointer;
   transition: color 0.3s;
 }
 
 .bell-icon:hover {
-  color: #333;
+  color: #f2f0f0;
 }
 
 .dashboard-main {
   text-align: center;
-  padding: 40px;
+  padding: 10px;
+  font-size: 30px;
 }
 
 .dashboard-main h1 {
-  font-size: 32px;
+  font-size: 45px;
   margin-bottom: 10px;
+  text-align: left;
 }
 
 .user-email {
   font-size: 18px;
   color: #777;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .dashboard-sections {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .dashboard-section {
-  background: #fff;
-  border: 1px solid #ddd;
-  padding: 20px;
-  border-radius: 8px;
-  width: 500px;
+  background: none;
+  border: none;
+  padding: 10px;
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  gap: 20px;
+  gap: 5px;
+  width: 500px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .section-icon {
-  width: 50px;
-  height: 50px;
-}
-
-.section-content {
-  flex-grow: 1;
-}
-
-.section-content h2 {
-  font-size: 20px;
-  margin: 0 0 10px 0;
-}
-
-.section-content p {
-  font-size: 14px;
+  font-size: 40px;
   color: #555;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.section-description {
+  font-size: 18px;
+  color: #555;
+  margin-top: 15px;
 }
 
 .support-button {
   position: fixed;
   bottom: 100px;
   right: 20px;
+  color: white;
+}
+
+.support-btn {
   background-color: #152259;
   color: white;
   border-radius: 24px;
   display: flex;
   align-items: center;
-  padding: 15px 50px;
+  padding: 20px 89px;
+  font-size: 16px;
 }
 
-.support-button v-icon {
-  margin-right: 5px;
-}
-
-.support-button span {
+.support-btn v-icon {
+  margin-right: 10px;
   color: white;
 }
 
-body, html, #__nuxt, #app, .v-application {
-  margin: 0;
-  padding: 0;
-  height: 100%;
+.support-btn span {
+  color: white;
 }
 </style>
