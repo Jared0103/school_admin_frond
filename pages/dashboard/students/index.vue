@@ -208,19 +208,19 @@
                     <div>{{ selectedStudent.className }}</div>
                     <div class="icons" style="padding-top: 14px; padding-bottom: 30px; display: flex; justify-content: center;">
                       <div class="icon-container" @mouseenter="showTooltip('className')" @mouseleave="hideTooltip">
-                        <img src="path/to/teacher.png" alt="Teacher" class="icon">
+                        <v-icon>mdi-teach</v-icon>
                         <div v-if="tooltipVisible && tooltipType === 'className'" class="tooltip">
                           {{ selectedStudent.className }}
                         </div>
                       </div>
                       <div class="icon-container" @mouseenter="showTooltip('phoneNumber')" @mouseleave="hideTooltip">
-                        <img src="path/to/call-calling.png" alt="Call Calling" class="icon">
+                        <v-icon>mdi-phone</v-icon>
                         <div v-if="tooltipVisible && tooltipType === 'phoneNumber'" class="tooltip">
                           {{ selectedStudent.phoneNumber }}
                         </div>
                       </div>
                       <div class="icon-container" @mouseenter="showTooltip('email')" @mouseleave="hideTooltip">
-                        <img src="path/to/sms.png" alt="SMS" class="icon">
+                        <v-icon>mdi-email</v-icon>
                         <div v-if="tooltipVisible && tooltipType === 'email'" class="tooltip">
                           {{ selectedStudent.email }}
                         </div>
