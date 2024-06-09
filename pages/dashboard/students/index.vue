@@ -272,7 +272,6 @@
             </v-col>
           </template>
         </v-row>
-
         <v-dialog v-model="showNuevoEstudiante" max-width="1100" persistent @click:outside="closeDialog">
           <v-card style="overflow: hidden; width: 100%; height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 50px;">
             <v-card-title class="text-h4" style="text-align: left; width: 100%;">
@@ -281,72 +280,69 @@
             <v-card-title class="text-h5" style="text-align: left; width: 100%; margin-bottom: 20px;">
               &nbsp;&nbsp;&nbsp;Manually&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Import CSV
             </v-card-title>
-            <v-card-text style="width: 100%; display: flex; justify-content: left;">
-              <v-form ref="formNuevoEstudiante" v-model="validFormNuevoEstudiante" style="width: 80%;">
+            <v-card-text style="width: 100%; display: flex; justify-content: center;">
+              <v-form ref="formNuevoEstudiante" v-model="validFormNuevoEstudiante" style="width: 100%;">
                 <v-container>
                   <v-row>
-                    <v-col cols="4">
-                      Name
+                    <v-col cols="12" md="4">
                       <v-text-field
                         v-model="fullNameNuevoEstudiante"
                         :rules="[v => !!v || 'Field is required']"
                         outlined
-                        type="text"
+                        label="Name"
                         style="margin-bottom: 20px;"
                       />
                     </v-col>
-                    <v-col cols="4">
-                      &nbsp;
+                    <v-col cols="12" md="4">
                       <v-select
                         v-model="classNameNuevoEstudiante"
                         :rules="[v => !!v || 'Field is required']"
                         outlined
-                        placeholder="Class"
+                        label="Class"
                         :items="['JSS 1', 'JSS 2', 'JSS 3', 'SS 1', 'SS 2', 'SS 3']"
-                        style="margin-bottom: 20px; margin-left: 20px;"
+                        style="margin-bottom: 20px;"
                       />
                     </v-col>
-                    <v-col cols="4">
-                      &nbsp;
+                    <v-col cols="12" md="4">
                       <v-select
                         v-model="genderNuevoEstudiante"
                         :rules="[v => !!v || 'Field is required']"
                         outlined
-                        placeholder="Gender"
+                        label="Gender"
                         :items="['Male', 'Female', 'Other']"
-                        style="margin-bottom: 20px; margin-left: 20px;"
+                        style="margin-bottom: 20px;"
                       />
                     </v-col>
                   </v-row>
                   <v-row>
-                    <v-col cols="6">
-                      Email address
+                    <v-col cols="12" md="6">
                       <v-text-field
                         v-model="emailNuevoEstudiante"
                         :rules="emailValidation"
                         outlined
+                        label="Email address"
                         type="email"
                         style="margin-bottom: 20px;"
                       />
                     </v-col>
-                    <v-col cols="6">
-                      Phone number
+                    <v-col cols="12" md="6">
                       <v-text-field
                         v-model="phoneNumberNuevoEstudiante"
                         :rules="[v => !!v || 'Field is required']"
                         outlined
+                        label="Phone number"
                         type="text"
                         style="margin-bottom: 20px;"
                       />
                     </v-col>
                   </v-row>
                   <v-row>
-                    <v-col cols="6">
-                      Password
+                    <v-col cols="12">
                       <v-text-field
                         v-model="passwordNuevoEstudiante"
                         :rules="passwordValidation"
                         outlined
+                        label="Password"
                         type="password"
                         style="margin-bottom: 20px;"
                       />
@@ -355,10 +351,9 @@
                 </v-container>
               </v-form>
             </v-card-text>
-
             <v-card-actions style="width: 100%; display: flex; justify-content: center; margin-left: 40px;">
-              <v-row style="width: 80%;">
-                <v-col cols="2">
+              <v-row style="width: 100%;">
+                <v-col cols="6">
                   <v-btn
                     plain
                     block
@@ -371,7 +366,7 @@
                     </span>
                   </v-btn>
                 </v-col>
-                <v-col cols="2">
+                <v-col cols="6">
                   <v-btn flat block color="#d3d3d3" style="border: none; display: flex; align-items: center; justify-content: center;" @click="agregarEstudiante">
                     <span style="color: black; text-transform: none;">
                       Add Student
@@ -556,6 +551,17 @@ export default {
     }
     this.getAllStudents()
   },
+  created () {
+    this.$nuxt.$on('evento', (data) => {
+      this.mensaje = data.message
+      this.color = data.color
+      this.type = data.type
+      this.showAlert = true
+      setTimeout(() => {
+        this.showAlert = false
+      }, data.time || 4000)
+    })
+  },
   methods: {
     logout () {
       localStorage.removeItem('token')
@@ -619,7 +625,6 @@ export default {
       this.validFormNuevoEstudiante = this.$refs.formNuevoEstudiante.validate()
       if (this.validFormNuevoEstudiante) {
         const sendData = {
-          id: Date.now().toString(),
           fullName: this.fullNameNuevoEstudiante,
           email: this.emailNuevoEstudiante,
           className: this.classNameNuevoEstudiante,
@@ -627,6 +632,7 @@ export default {
           phoneNumber: this.phoneNumberNuevoEstudiante,
           password: this.passwordNuevoEstudiante
         }
+        console.log('🚀 ~ agregarEstudiante ~ sendData:', sendData)
         const config = {
           headers: {
             Authorization: `Bearer ${this.token}`
@@ -742,17 +748,6 @@ export default {
           console.error('Error importing students:', err)
         })
     }
-  },
-  created () {
-    this.$nuxt.$on('evento', (data) => {
-      this.mensaje = data.message
-      this.color = data.color
-      this.type = data.type
-      this.showAlert = true
-      setTimeout(() => {
-        this.showAlert = false
-      }, data.time || 4000)
-    })
   }
 }
 </script>

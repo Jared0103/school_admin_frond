@@ -343,12 +343,12 @@
               <v-card-actions>
                 <v-btn
                   plain
-                  color="white"
+                  color="00000"
+                  style="text-transform: none; font-weight: bold; font-size: 14px;"
                   @click="addAnother"
                 >
                   + Add Another
                 </v-btn>
-                <v-spacer />
                 <v-btn
                   flat
                   color="#d3d3d3"
@@ -493,6 +493,7 @@ export default {
       tooltipVisible: false,
       tooltipType: null,
       dialog: false,
+      selectedTeacher: null,
       passwordValidation: [
         v => (v && v.length > 8) || 'Password must have more than 8 chars'
       ],
@@ -617,13 +618,13 @@ export default {
       this.validFormNuevo = this.$refs.formNuevo.validate()
       if (this.validFormNuevo) {
         const sendData = {
-          id: Date.now().toString(),
           fullName: this.fullNameNuevo,
           email: this.emailNuevo,
           className: this.classNameNuevo,
           gender: this.genderNuevo,
           phoneNumber: this.phoneNumberNuevo,
-          password: this.passwordNuevo
+          password: this.passwordNuevo,
+          subject: this.subjectNuevo
         }
         const config = {
           headers: {
