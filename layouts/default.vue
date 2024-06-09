@@ -1,6 +1,5 @@
 <template>
   <v-app id="app">
-    <!-- Barra de navegación lateral -->
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
@@ -8,7 +7,6 @@
       fixed
       app
     >
-      <!-- Elementos de navegación -->
       <v-divider />
       <v-list>
         <v-list-item
@@ -28,7 +26,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <!-- Barra de aplicación -->
+    <!--
     <v-app-bar
       :clipped-left="clipped"
       fixed
@@ -39,8 +37,8 @@
         {{ title }}
       </v-toolbar-title>
     </v-app-bar>
+    -->
 
-    <!-- Contenido principal -->
     <v-main>
       <ui-alert
         v-if="showAlert"
@@ -54,7 +52,6 @@
       </v-container>
     </v-main>
 
-    <!-- Pie de página -->
     <v-footer app>
       <v-row align="center">
         <v-col>
@@ -96,12 +93,10 @@ export default {
 </script>
 
 <style scoped>
-/* Estilos específicos del layout */
 #app {
   min-height: 100vh;
 }
 
-/* Ajustes de la barra de navegación */
 .v-navigation-drawer .v-list-item__icon {
   margin-right: 0.5rem;
 }
@@ -110,12 +105,6 @@ export default {
   font-size: 14px;
 }
 
-/* Ajustes de la barra de aplicación */
-.v-toolbar__title {
-  font-size: 18px;
-}
-
-/* Ajustes del pie de página */
 .v-footer {
   padding: 10px;
   background-color: #424242;

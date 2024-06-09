@@ -7,37 +7,74 @@
       :clipped="clipped"
       fixed
       app
+      class="custom-background"
+      dark
     >
+      <!-- Imagen en la parte superior del sidebar -->
+      <v-list-item class="justify-center logo-container">
+        <v-img src="/sideBar/Ellipse 6.png" alt="Ellipse" class="ellipse-image" />
+        <v-list-item-content>
+          <v-list-item-title class="white--text text-center">
+            Udemy Inter. school
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
       <!-- Elementos de navegación -->
       <v-divider />
       <v-list>
-        <v-list-item
+        <v-list-group
           v-for="(item, i) in items"
           :key="i"
-          :to="item.to"
-          router
-          exact
+          v-model="item.active"
+          no-action
         >
+          <template #activator>
+            <v-list-item @click="navigateTo(item.to)">
+              <v-list-item-action>
+                <v-img :src="item.img" alt="icon" class="sidebar-icon" />
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title class="white--text">
+                  {{ item.title }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+          <v-list-item
+            v-for="(subItem, j) in item.subItems"
+            :key="j"
+            class="pl-4"
+            :style="{ marginLeft: '10px' }"
+          >
+            <v-list-item-action>
+              <v-icon class="submenu-icon">
+                mdi-chevron-right
+              </v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title class="white--text">
+                {{ subItem.title }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+
+        <!-- Espacio adicional antes de "Features" -->
+        <v-list-item class="mt-4" />
+        <v-list-item to="/dashboard/features" class="feature-item">
           <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-img src="/sideBar/Billing.png" alt="icon" class="sidebar-icon" />
           </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          <v-list-item-content class="feature-content">
+            <v-list-item-title class="white--text">
+              Features
+            </v-list-item-title>
+            <span class="new-badge">NEW</span>
           </v-list-item-content>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-
-    <!-- Barra de aplicación -->
-    <v-app-bar
-      :clipped-left="clipped"
-      fixed
-      app
-    >
-      <v-toolbar-title class="text-uppercase">
-        {{ title }}
-      </v-toolbar-title>
-    </v-app-bar>
 
     <!-- Contenido principal -->
     <v-main>
@@ -71,54 +108,79 @@ export default {
     return {
       clipped: false,
       drawer: false,
-      items: [
-        {
-          icon: 'mdi-account',
-          title: 'Dashboard',
-          to: '/dashboard'
-        },
-        {
-          icon: 'mdi-account',
-          title: 'Teachers',
-          to: '/dashboard/teachers'
-        },
-        {
-          icon: 'mdi-account',
-          title: 'Students/ classes',
-          to: '/dashboard/students'
-        },
-        {
-          icon: 'mdi-account',
-          title: 'Billing',
-          to: '/dashboard'
-        },
-        {
-          icon: 'mdi-account',
-          title: 'Setting and Profile',
-          to: '/dashboard'
-        },
-        {
-          icon: 'mdi-account',
-          title: 'Exams',
-          to: '/dashboard'
-        },
-        {
-          icon: 'mdi-account',
-          title: 'Features',
-          to: '/dashboard'
-        }
-      ],
       miniVariant: false,
       title: 'CRUD con Firebase y Nuxt.js',
       showAlert: false,
       mensaje: '',
       color: '',
-      type: ''
+      type: '',
+      items: [
+        {
+          img: '/sideBar/home-2.png',
+          title: 'Dashboard',
+          to: '/dashboard',
+          active: false,
+          subItems: []
+        },
+        {
+          img: '/sideBar/home-2.png',
+          title: 'Teachers',
+          to: '/dashboard/teachers',
+          active: false,
+          subItems: [
+            { title: 'All teachers' },
+            { title: 'Add teachers' },
+            { title: 'Teachers details' }
+          ]
+        },
+        {
+          img: '/sideBar/school.png',
+          title: 'Students/ classes',
+          to: '/dashboard/students',
+          active: false,
+          subItems: [
+            { title: 'All students' },
+            { title: 'Admission form' },
+            { title: 'Student promotion' },
+            { title: 'Class' }
+          ]
+        },
+        {
+          img: '/sideBar/Billing.png',
+          title: 'Billing',
+          to: '/dashboard/billing',
+          active: false,
+          subItems: [
+            { title: 'Student Billing' },
+            { title: 'Parent Billing' },
+            { title: 'School billing' },
+            { title: 'Friends Billing' }
+          ]
+        },
+        {
+          img: '/sideBar/Settings.png',
+          title: 'Setting and Profile',
+          to: '/dashboard/settings',
+          active: false,
+          subItems: []
+        },
+        {
+          img: '/sideBar/Exams.png',
+          title: 'Exams',
+          to: '/dashboard/exams',
+          active: false,
+          subItems: []
+        }
+      ]
+    }
+  },
+  methods: {
+    navigateTo (route) {
+      this.$router.push(route)
     }
   },
   created () {
     this.$nuxt.$on('evento', (data) => {
-      console.log('🚀 ~ this.$nuxt.$on ~ evento:', data)
       this.mensaje = data.message
       this.color = data.color
       this.type = data.type
@@ -137,6 +199,53 @@ export default {
   min-height: 100vh;
 }
 
+.custom-background {
+  background: #152259 !important;
+}
+
+.sidebar-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.ellipse-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.logo-container {
+  flex-direction: column;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.new-badge {
+  background-color: #add8e6;
+  color: #00008b;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 10%;
+  margin-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20px;
+  width: 20px;
+}
+
+.feature-item {
+  margin-top: 20px;
+}
+
+.feature-content {
+  display: flex;
+  align-items: center;
+}
+
 /* Ajustes de la barra de navegación */
 .v-navigation-drawer .v-list-item__icon {
   margin-right: 0.5rem;
@@ -144,6 +253,15 @@ export default {
 
 .v-navigation-drawer .v-list-item__title {
   font-size: 14px;
+}
+
+.v-list-item:hover {
+  background-color: #1a2b5f !important;
+}
+
+.submenu-icon {
+  margin-left: -10px;
+  color: #fff;
 }
 
 /* Ajustes de la barra de aplicación */
