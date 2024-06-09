@@ -556,17 +556,6 @@ export default {
     }
     this.getAllStudents()
   },
-  created () {
-    this.$nuxt.$on('evento', (data) => {
-      this.mensaje = data.message
-      this.color = data.color
-      this.type = data.type
-      this.showAlert = true
-      setTimeout(() => {
-        this.showAlert = false
-      }, data.time || 4000)
-    })
-  },
   methods: {
     logout () {
       localStorage.removeItem('token')
@@ -753,6 +742,17 @@ export default {
           console.error('Error importing students:', err)
         })
     }
+  },
+  created () {
+    this.$nuxt.$on('evento', (data) => {
+      this.mensaje = data.message
+      this.color = data.color
+      this.type = data.type
+      this.showAlert = true
+      setTimeout(() => {
+        this.showAlert = false
+      }, data.time || 4000)
+    })
   }
 }
 </script>
